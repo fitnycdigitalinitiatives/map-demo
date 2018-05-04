@@ -6,44 +6,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <!-- Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" crossorigin=""></script>
 
-    <title>Map Demo</title>
+    <title>Paris Fashion Map Demo</title>
   </head>
   <body>
-    <h1>Map Demo</h1>
     <div class="container">
+      <h1>Early Fashion Designer Map: Paris</h1>
       <div id="mapid" style="height: 750px;"></div>
     </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script>
-      var mymap = L.map('mapid').setView([48.853, 2.354], 13);
 
-      L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-    		maxZoom: 18,
-    		attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-    			'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-    			'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-    		id: 'mapbox.light',
-        accessToken: 'pk.eyJ1IjoiZml0ZGlnaXRhbGluaXRpYXRpdmVzIiwiYSI6ImNqZ3FxaWI0YTBoOXYyenA2ZnVyYWdsenQifQ.ckTVKSAZ8ZWPAefkd7SOaA'
-    	}).addTo(mymap);
-      L.tileLayer('https://maps.georeferencer.com/georeferences/944794552786/2018-05-02T23:08:53.740570Z/map/{z}/{x}/{y}.png?key=mpEzGoIplWrB0gzV9OUP', {
-    		maxZoom: 18
-    	}).addTo(mymap);
+    	var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' + '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' + 'Imagery © <a href="http://mapbox.com">Mapbox</a>';
+  		var mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZml0ZGlnaXRhbGluaXRpYXRpdmVzIiwiYSI6ImNqZ3FxaWI0YTBoOXYyenA2ZnVyYWdsenQifQ.ckTVKSAZ8ZWPAefkd7SOaA';
+      var light = L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr})
 
-      var marker_1 = L.marker([48.86872, 2.321933]).addTo(mymap);
-      marker_1.bindPopup("<h6>A. Félix<br><small class='text-muted'>15 rue du Faubourg-Saint-Honoré</small></h6><figure class='figure'><img src='https://dl.airtable.com/vgI3vNfnST2swRNcqlCb_image.png' class='figure-img img-fluid rounded' alt='A generic square placeholder image with rounded corners in a figure.'><figcaption class='figure-caption'>MAD - UF 80-23-2</figcaption></figure><a href='#'>View full record</a>");
-      var marker_2 = L.marker([48.86951, 2.338441]).addTo(mymap);
-      marker_2.bindPopup("<h6>A. Corbay<br><small class='text-muted'>4 rue Ménars</small></h6><figure class='figure'><img src='https://dl.airtable.com/FtGRnkkaTRqTDd0eIyWg_C.I.68.53.3ab_F.jpg' class='figure-img img-fluid rounded' alt='A generic square placeholder image with rounded corners in a figure.'><figcaption class='figure-caption'>Met - C.I.68.53.3a, b</figcaption></figure><a href='#'>View full record</a>");
+      var paris_1840_layer = L.layerGroup();
+    	L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr}).addTo(paris_1840_layer);
+      var paris_1840 = L.tileLayer('https://mapwarper.net/maps/tile/21113/{z}/{x}/{y}.png', {attribution: 'Paris 1840 courtesy of Map Warper'}).addTo(paris_1840_layer);
+      var paris_1860_layer = L.layerGroup();
+      L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr}).addTo(paris_1860_layer);
+      var paris_1860 = L.tileLayer('https://maps.georeferencer.com/georeferences/944794552786/2018-05-02T23:08:53.740570Z/map/{z}/{x}/{y}.png?key=mpEzGoIplWrB0gzV9OUP', {attribution: 'Paris 1860 courtesy of David Rumsey'}).addTo(paris_1860_layer);
 
+      var milliner = L.layerGroup();
+      var womenswear = L.layerGroup();
+      var department = L.layerGroup();
+
+      var coord_1 = [48.86872, 2.321933];
+      var popup_1 = '<h6>A. Félix<br><small class="text-muted">15 rue du Faubourg-Saint-Honoré</small></h6><figure class="figure"><img src="https://dl.airtable.com/vgI3vNfnST2swRNcqlCb_image.png" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure."><figcaption class="figure-caption">MAD - UF 80-23-2</figcaption></figure><a href="#">View full record</a>';
+      var marker = L.marker(coord_1).bindPopup(popup_1).addTo(milliner);
+
+      var coord_2 = [48.86951, 2.338441];
+      var popup_2 = '<h6>A. Corbay<br><small class="text-muted">4 rue Ménars</small></h6><figure class="figure"><img src="https://dl.airtable.com/FtGRnkkaTRqTDd0eIyWg_C.I.68.53.3ab_F.jpg" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure."><figcaption class="figure-caption">Met - C.I.68.53.3a, b</figcaption></figure><a href="#">View full record</a>';
+      L.marker(coord_2).bindPopup(popup_2).addTo(milliner);
+
+      var coord_3 = [48.8686382, 2.3304539];
+      var popup_3 = '<h6>Annie & Georgette<br><small class="text-muted">3 rue de la Paix</small></h6><figure class="figure"><img src="https://dl.airtable.com/WapKzSlCQIqMku4Fn6OE_image.png" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure."><figcaption class="figure-caption">PMA - 1948-18-44</figcaption></figure><a href="#">View full record</a>';
+      L.marker(coord_3).bindPopup(popup_3).addTo(womenswear);
+
+      var coord_4 = [48.86975, 2.311164];
+      var popup_4 = '<h6>Caroline Reboux<br><small class="text-muted">9 avenue Matignon</small></h6><figure class="figure"><img src="https://dl.airtable.com/6ngg0TREWYulDxB5y2yg_image.png" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure."><figcaption class="figure-caption">MAD - 89-48-3</figcaption></figure><a href="#">View full record</a>';
+      L.marker(coord_4).bindPopup(popup_4).addTo(womenswear);
+
+      var coord_5 = [48.86804, 2.330207];
+      var popup_5 = '<h6>Ancienne Maison Paul Virot & Berthe<br><small class="text-muted">26 place Vendôme</small></h6><figure class="figure"><img src="https://dl.airtable.com/UzlBQqLSQbK1scznAnN4_image.png" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure."><figcaption class="figure-caption">FAMSF - 55.6.4</figcaption></figure><a href="#">View full record</a>';
+      L.marker(coord_5).bindPopup(popup_5).addTo(department);
+
+      var coord_6 = [48.87327, 2.326307];
+      var popup_6 = '<h6>Cordeau et Laugaudin<br><small class="text-muted">32 rue Mathurins</small></h6><figure class="figure"><img src="https://dl.airtable.com/2mVJAvumRoOtmYJhrKBV_image.png" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure."><figcaption class="figure-caption">MAD - 28185.A</figcaption></figure><a href="#">View full record</a>';
+      L.marker(coord_6).bindPopup(popup_6).addTo(department);
+
+    	var map = L.map('mapid', {
+    		center: [48.853, 2.354],
+    		zoom: 13.3,
+    		layers: [paris_1860_layer, milliner, womenswear, department]
+    	});
+
+    	var baseLayers = {
+        "Paris 1860": paris_1860_layer,
+        "Paris 1840": paris_1840_layer,
+        "Modern": light
+    	};
+
+      var overlayMaps = {
+          "Milliner": milliner,
+          "Womenswear": womenswear,
+          "Department store": department
+      };
+
+    	L.control.layers(baseLayers, overlayMaps).addTo(map);
     </script>
   </body>
 </html>
