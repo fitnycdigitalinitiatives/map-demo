@@ -7,6 +7,8 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css?family=Arimo:400,400i,700,700i" rel="stylesheet">
     <!-- Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" crossorigin=""></script>
@@ -14,9 +16,31 @@
     <title>Paris Fashion Map Demo</title>
   </head>
   <body>
-    <div class="container">
-      <h1>Early Fashion Designer Map: Paris</h1>
-      <div id="mapid" style="height: 750px;"></div>
+    <nav class="navbar navbar-dark">
+        <a class="navbar-brand" href="#">
+          <img src="https://fashionhistory.fitnyc.edu/wp-content/uploads/2018/01/FHT-Logo-3.png" height="40" alt="">
+        </a>
+    </nav>
+    <div class="container-fluid p-0">
+      <div class="row no-gutters">
+        <div id="sidebar" class="col-sm-3 px-3">
+          <h1 class="text-center mt-4">Early Fashion Designers</h1>
+          <ul class="nav justify-content-center" id="cities">
+            <li class="nav-item">
+              <a class="nav-link active text-dark" href="#">Paris</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" href="#">New York</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" href="#">Chicago</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-sm-9">
+          <div id="paris-map"></div>
+        </div>
+      </div>
     </div>
 
     <!-- Optional JavaScript -->
@@ -37,38 +61,104 @@
       L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr}).addTo(paris_1860_layer);
       var paris_1860 = L.tileLayer('https://maps.georeferencer.com/georeferences/944794552786/2018-05-02T23:08:53.740570Z/map/{z}/{x}/{y}.png?key=mpEzGoIplWrB0gzV9OUP', {attribution: 'Paris 1860 courtesy of David Rumsey'}).addTo(paris_1860_layer);
 
-      var milliner = L.layerGroup();
-      var womenswear = L.layerGroup();
-      var department = L.layerGroup();
+      var Childrenswear = L.layerGroup();
+      var Departmentstore = L.layerGroup();
+      var Perfumer = L.layerGroup();
+      var Importer = L.layerGroup();
+      var Womenswear = L.layerGroup();
+      var Other = L.layerGroup();
+      var Tailor = L.layerGroup();
+      var Milliner = L.layerGroup();
 
-      var coord_1 = [48.86872, 2.321933];
-      var popup_1 = '<h6>A. Félix<br><small class="text-muted">15 rue du Faubourg-Saint-Honoré</small></h6><figure class="figure"><img src="https://dl.airtable.com/vgI3vNfnST2swRNcqlCb_image.png" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure."><figcaption class="figure-caption">MAD - UF 80-23-2</figcaption></figure><a href="#">View full record</a>';
-      var marker = L.marker(coord_1).bindPopup(popup_1).addTo(milliner);
+      L.marker([48.85661, 2.352222]).bindPopup('<h3 id="house">Maison Félix</h3><p id="address"></p><div id="garments"></div>').addTo(Other);
+      L.marker([48.86898, 2.330623]).bindPopup('<h3 id="house">Worth et Bobergh</h3><p id="address">7 rue de la Paix</p><div id="garments"></div>').addTo(Other);
+      L.marker([48.85661, 2.352222]).bindPopup('<h3 id="house">Maison Laur</h3><p id="address"></p><div id="garments"></div>').addTo(Other);
+      L.marker([48.87393, 2.328485]).bindPopup('<h3 id="house">Printemps</h3><p id="address">64 boulevard Haussmann</p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Department store</a>').addTo(Departmentstore);
+      L.marker([48.87174, 2.339512]).bindPopup('<h3 id="house">Madame Josse</h3><p id="address">3 boulevard des Italiens</p><div id="garments"><a href=""><img src="" class="img-thumbnail"></a></div> <a href="#" id="type" class="badge badge-primary">Milliner</a> <a href="#" id="type" class="badge badge-primary">Outerwear</a>').addTo(Milliner);
+      L.marker([48.85661, 2.352222]).bindPopup('<h3 id="house">Laville Petit & Crespin</h3><p id="address"></p><div id="garments"><a href="https://www.mfa.org/collections/object/riding-hat-120384"><img src="https://dl.airtable.com/8ce1Wk0HROOVvAN0pliN_image.png" class="img-thumbnail"></a></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.86958, 2.331347]).bindPopup('<h3 id="house">Alphonsine</h3><p id="address">15 rue de la Paix</p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.86961, 2.331767]).bindPopup('<h3 id="house">Maison Lespiaut</h3><p id="address">18 rue de la Paix</p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.8698, 2.331368]).bindPopup('<h3 id="house">Camille Marchais</h3><p id="address">17 rue de la Paix</p><div id="garments"><a href=""><img src="" class="img-thumbnail"></a></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.86824, 2.324152]).bindPopup('<h3 id="house">Madame Louison</h3><p id="address">416 rue St. Honoré</p><div id="garments"><a href="https://art.famsf.org/madame-louison/womans-hat-19854039"><img src="https://dl.airtable.com/1Ww3UMmQluvQrpOlSNeO_image.png" class="img-thumbnail"></a></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.8712, 2.322835]).bindPopup('<h3 id="house">Ida Margueritte</h3><p id="address">8 boulevard Malesherbes</p><div id="garments"><a href="https://art.famsf.org/ida-margueritte/womans-hat-491029"><img src="https://dl.airtable.com/usCn9mWmTAyE6tM9pdRc_image.png" class="img-thumbnail"></a></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([43.03242, -73.936]).bindPopup('<h3 id="house">Redfern and Sons</h3><p id="address"></p><div id="garments"></div>').addTo(Other);
+      L.marker([51.50735, -0.12776]).bindPopup('<h3 id="house">Brown\'s</h3><p id="address"></p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([40.59582, -73.7406]).bindPopup('<h3 id="house">Madame Hartley</h3><p id="address">177 Fifth Avenue</p><div id="garments"><a href="https://www.philamuseum.org/collections/permanent/90362.html?mulR=1294222895|29"><img src="https://dl.airtable.com/axpeSBZWQ1G7pzSXp9Y8_image.png" class="img-thumbnail"></a></div> <a href="#" id="type" class="badge badge-primary">Milliner</a> <a href="#" id="type" class="badge badge-primary">Importer</a>').addTo(Milliner);
+      L.marker([51.50735, -0.12776]).bindPopup('<h3 id="house">Creed</h3><p id="address"></p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Tailor</a>').addTo(Tailor);
+      L.marker([48.85661, 2.352222]).bindPopup('<h3 id="house">Chouvenin & Legrand</h3><p id="address"></p><div id="garments"><a href="http://fashionmuseum.fitnyc.edu/view/objects/asitem/759/25/dynasty-asc?t:state:flow=295f6e1f-6c37-45e3-a323-8d8a0ae31752"><img src="https://dl.airtable.com/7JsbLm6PThqmo9LSF3Iz_image.png" class="img-thumbnail"></a></div>').addTo(Other);
+      L.marker([51.51204, -0.13963]).bindPopup('<h3 id="house">Madame Louise</h3><p id="address">Regent Street</p><div id="garments"><a href=""><img src="" class="img-thumbnail"></a></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.86951, 2.333155]).bindPopup('<h3 id="house">Mme Roger</h3><p id="address">rue Louis-le-Grand</p><div id="garments"></div>').addTo(Other);
+      L.marker([48.86891, 2.330178]).bindPopup('<h3 id="house">Madame Petit-Roger</h3><p id="address">5 rue de la Paix</p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.86951, 2.338441]).bindPopup('<h3 id="house">A. Corbay</h3><p id="address">4 rue Ménars</p><div id="garments"><a href="https://metmuseum.org/art/collection/search/97796"><img src="https://dl.airtable.com/FtGRnkkaTRqTDd0eIyWg_C.I.68.53.3ab_F.jpg" class="img-thumbnail"></a></div>').addTo(Other);
+      L.marker([48.86975, 2.311164]).bindPopup('<h3 id="house">Caroline Reboux</h3><p id="address">9 avenue Matignon</p><div id="garments"><a href="http://collections.lesartsdecoratifs.fr/chapeau-43"><img src="https://dl.airtable.com/6ngg0TREWYulDxB5y2yg_image.png" class="img-thumbnail"></a></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.86836, 2.329958]).bindPopup('<h3 id="house">Michniewicz-Tuvée</h3><p id="address">25 place Vendôme</p><div id="garments"><a href="https://art.famsf.org/michniewicz-tuv%C3%A9e/womans-hat-56186"><img src="https://dl.airtable.com/UZBUsDxQCU5dnOyu49jQ_image.png" class="img-thumbnail"></a></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.86958, 2.331347]).bindPopup('<h3 id="house">Guerlain</h3><p id="address">15 rue de la Paix</p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Perfumer</a>').addTo(Perfumer);
+      L.marker([48.86185, 2.338297]).bindPopup('<h3 id="house">Grands Magasins du Louvre</h3><p id="address">164 rue de Rivoli</p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Department store</a>').addTo(Departmentstore);
+      L.marker([48.86891, 2.330178]).bindPopup('<h3 id="house">Claude Chevrillon</h3><p id="address">5 rue de la Paix</p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([41.4901, -71.3128]).bindPopup('<h3 id="house">Redfern and Sons</h3><p id="address"></p><div id="garments"></div>').addTo(Other);
+      L.marker([48.86816, 2.330312]).bindPopup('<h3 id="house">Heitz-Boyer</h3><p id="address">28 place Vendôme</p><div id="garments"><a href="https://www.mfa.org/collections/object/ladys-hat-115136"><img src="https://dl.airtable.com/BcASBxmJSZOGFTVC1dri_image.png" class="img-thumbnail"></a></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.85661, 2.352222]).bindPopup('<h3 id="house">Gagelin</h3><p id="address"></p><div id="garments"></div>').addTo(Other);
+      L.marker([48.86898, 2.330623]).bindPopup('<h3 id="house">Madame Hofele</h3><p id="address">7 rue de la Paix</p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.86889, 2.335503]).bindPopup('<h3 id="house">Magasins de Mme Seuriot</h3><p id="address">rue Monsigny</p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Womenswear</a> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Womenswear);
+      L.marker([48.86816, 2.323322]).bindPopup('<h3 id="house">J. Suzanne</h3><p id="address">14 rue Royale</p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([51.50735, -0.12776]).bindPopup('<h3 id="house">Redfern</h3><p id="address"></p><div id="garments"></div>').addTo(Other);
+      L.marker([48.8686382, 2.3304539]).bindPopup('<h3 id="house">Annie & Georgette</h3><p id="address">3 rue de la Paix</p><div id="garments"><a href="https://www.philamuseum.org/collections/permanent/206860.html?mulR=112773909|10"><img src="https://dl.airtable.com/WapKzSlCQIqMku4Fn6OE_image.png" class="img-thumbnail"></a></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.85661, 2.352222]).bindPopup('<h3 id="house">Maison Muller Gilbert</h3><p id="address"></p><div id="garments"></div>').addTo(Other);
+      L.marker([48.86898, 2.330623]).bindPopup('<h3 id="house">Auguste Petit</h3><p id="address">7 rue de la Paix</p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.87002, 2.333721]).bindPopup('<h3 id="house">Annie & Georgette</h3><p id="address">24 rue Louis-le-Grand</p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.87327, 2.326307]).bindPopup('<h3 id="house">Cordeau et Laugaudin</h3><p id="address">32 rue Mathurins</p><div id="garments"><a href="http://collections.lesartsdecoratifs.fr/chapeau-35"><img src="https://dl.airtable.com/2mVJAvumRoOtmYJhrKBV_image.png" class="img-thumbnail"></a></div> <a href="#" id="type" class="badge badge-primary">Milliner</a> <a href="#" id="type" class="badge badge-primary">Womenswear</a>').addTo(Milliner);
+      L.marker([48.87087, 2.331762]).bindPopup('<h3 id="house">Caroline Reboux</h3><p id="address">23 rue de la Paix</p><div id="garments"><a href=""><img src="" class="img-thumbnail"></a><a href="http://collections.lesartsdecoratifs.fr/canotier"><img src="https://dl.airtable.com/77vOWQVSCyCVGCYY6acZ_image.png" class="img-thumbnail"></a><a href="http://collections.lesartsdecoratifs.fr/chapeau-44"><img src="https://dl.airtable.com/mMFOlR3ZSy8DprXnx7Ji_image.png" class="img-thumbnail"></a></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.86743, 2.322895]).bindPopup('<h3 id="house">Esther Meyer </h3><p id="address">6 rue Royale</p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.86975, 2.334968]).bindPopup('<h3 id="house">Mangin Maurice</h3><p id="address">27 rue du 4 Septembre</p><div id="garments"><a href="https://collections.lacma.org/node/214434"><img src="https://dl.airtable.com/KGVjLfHJSOWo4lzoOqnW_image.png" class="img-thumbnail"></a></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.86688, 2.33217]).bindPopup('<h3 id="house">House of Lanvin</h3><p id="address">rue Marché-Saint-Honoré</p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([40.71278, -74.006]).bindPopup('<h3 id="house">Haas Brothers</h3><p id="address"></p><div id="garments"></div>').addTo(Other);
+      L.marker([48.85661, 2.352222]).bindPopup('<h3 id="house">Redfern</h3><p id="address"></p><div id="garments"></div>').addTo(Other);
+      L.marker([48.87056, 2.329732]).bindPopup('<h3 id="house">Madame Georgette</h3><p id="address">11 rue Scribe</p><div id="garments"><a href=""><img src="" class="img-thumbnail"></a><a href="https://art.famsf.org/mme-georgette/womans-hat-563540"><img src="https://dl.airtable.com/L9IVLRBTSwyKNjkGtw5C_image.png" class="img-thumbnail"></a><a href="https://www.philamuseum.org/collections/permanent/87833.html?mulR=1177999625|1"><img src="https://dl.airtable.com/4ntNLKSkG8rNUH4Bp1wt_image.png" class="img-thumbnail"></a></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.86854, 2.330822]).bindPopup('<h3 id="house">Pouyanne</h3><p id="address">4 rue de la Paix</p><div id="garments"><a href="https://art.famsf.org/mme-pouyanne/womans-bonnet-51296"><img src="https://dl.airtable.com/ldzlfymKSvqVfoOBe7sy_image.png" class="img-thumbnail"></a></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.86896, 2.322363]).bindPopup('<h3 id="house">House of Lanvin</h3><p id="address">22 rue du Faubourg-Saint-Honoré</p><div id="garments"><a href="http://www.mfa.org/collections/object/womans-hat-125339"><img src="https://dl.airtable.com/ro5VBFX5Qxuzlgak8B44_image.png" class="img-thumbnail"></a></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.87473, 2.335265]).bindPopup('<h3 id="house">Kerteux Soeurs</h3><p id="address">rue Taitbout</p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Womenswear</a>').addTo(Womenswear);
+      L.marker([48.86841, 2.322695]).bindPopup('<h3 id="house">Madame Bonni</h3><p id="address">3 Faubourg St. Honoré</p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([41.88527, -87.6259]).bindPopup('<h3 id="house">Brown</h3><p id="address">171 Wabash Ave</p><div id="garments"><a href=""><img src="" class="img-thumbnail"></a></div> <a href="#" id="type" class="badge badge-primary">Milliner</a> <a href="#" id="type" class="badge badge-primary">Importer</a>').addTo(Milliner);
+      L.marker([48.86654, 2.334666]).bindPopup('<h3 id="house">A. Fanet</h3><p id="address">20 rue Therese</p><div id="garments"><a href="https://metmuseum.org/art/collection/search/101834"><img src="https://dl.airtable.com/s1IKXL33Sfi9VmdcM0tv_42.82ab_F.jpg" class="img-thumbnail"></a></div>').addTo(Other);
+      L.marker([48.86952, 2.334203]).bindPopup('<h3 id="house">Madame Marie Collin</h3><p id="address">8 rue de Port-Mahon</p><div id="garments"><a href="https://www.mfa.org/collections/object/hat-99382"><img src="https://dl.airtable.com/ofIdIwlWSSuAkL3jULJg_image.png" class="img-thumbnail"></a></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.86914, 2.331361]).bindPopup('<h3 id="house">Maison Virot</h3><p id="address">12 rue de la Paix</p><div id="garments"><a href=""><img src="" class="img-thumbnail"></a><a href="https://art.famsf.org/maison-virot/womans-hat-491025"><img src="https://dl.airtable.com/ISQs465QkuSfXvua55XQ_image.png" class="img-thumbnail"></a></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.86683, 2.336572]).bindPopup('<h3 id="house">Madame Maugas</h3><p id="address">rue Neuve-des-Petits-Champs</p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Womenswear</a>').addTo(Womenswear);
+      L.marker([48.87556, 2.331954]).bindPopup('<h3 id="house">E. Gauthier</h3><p id="address">49 bis avenue d\'Antin, Champ Elysées</p><div id="garments"><a href="http://collections.lesartsdecoratifs.fr/capote-3"><img src="https://dl.airtable.com/Q4RJIjETdCL4J3Evld7v_image.png" class="img-thumbnail"></a></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.86323, 2.334224]).bindPopup('<h3 id="house">Mon/Mme Vignon</h3><p id="address">182 rue de Rivoli</p><div id="garments"></div>').addTo(Other);
+      L.marker([48.86951, 2.333155]).bindPopup('<h3 id="house">Hudson et Cie</h3><p id="address">rue Louis-le-Grand</p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Womenswear</a>').addTo(Womenswear);
+      L.marker([48.86933, 2.331596]).bindPopup('<h3 id="house">Madeleine Carlier</h3><p id="address">16 rue de la Paix</p><div id="garments"></div>').addTo(Other);
+      L.marker([51.50735, -0.12776]).bindPopup('<h3 id="house">Lucile</h3><p id="address"></p><div id="garments"></div>').addTo(Other);
+      L.marker([51.51432, -0.1486]).bindPopup('<h3 id="house">Louise and Co.</h3><p id="address">Oxford Street</p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.87005, 2.331802]).bindPopup('<h3 id="house">Doucet</h3><p id="address">21 rue de la Paix</p><div id="garments"></div>').addTo(Other);
+      L.marker([48.87087, 2.331762]).bindPopup('<h3 id="house">Madame Georgette</h3><p id="address">1 rue de la Paix</p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([51.51685, -0.14282]).bindPopup('<h3 id="house">Louise and Co.</h3><p id="address">Regent Street</p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([40.71278, -74.006]).bindPopup('<h3 id="house">Joseph Johnson</h3><p id="address"></p><div id="garments"></div>').addTo(Other);
+      L.marker([48.86872, 2.321933]).bindPopup('<h3 id="house"> A. Félix</h3><p id="address">15 rue du Faubourg-Saint-Honoré</p><div id="garments"><a href="http://collections.lesartsdecoratifs.fr/capote-2"><img src="https://dl.airtable.com/vgI3vNfnST2swRNcqlCb_image.png" class="img-thumbnail"></a></div> <a href="#" id="type" class="badge badge-primary">Milliner</a> <a href="#" id="type" class="badge badge-primary">Womenswear</a>').addTo(Milliner);
+      L.marker([48.87011, 2.331886]).bindPopup('<h3 id="house">Mme Blanchard</h3><p id="address">23 rue de la Paix</p><div id="garments"><a href="https://metmuseum.org/art/collection/search/82629"><img src="https://dl.airtable.com/B1w5GcJWR4i0kvuvINEB_C.I.43.7.4ab.jpg" class="img-thumbnail"></a></div>').addTo(Other);
+      L.marker([48.85524, 2.324809]).bindPopup('<h3 id="house">Au Bon Marché</h3><p id="address">rue du Bac</p><div id="garments"><a href="http://collections.lesartsdecoratifs.fr/chapeau-6"><img src="https://dl.airtable.com/myBYF5p2QGyAycxVdfh7_image.png" class="img-thumbnail"></a></div> <a href="#" id="type" class="badge badge-primary">Department store</a>').addTo(Departmentstore);
+      L.marker([48.85661, 2.352222]).bindPopup('<h3 id="house">Paquin</h3><p id="address"></p><div id="garments"></div>').addTo(Other);
+      L.marker([51.49414, -0.169]).bindPopup('<h3 id="house">Louise and Co.</h3><p id="address">Brompton Road</p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.86995, 2.339201]).bindPopup('<h3 id="house">Louis Hippolyte LeRoy</h3><p id="address">82 rue de Richelieu</p><div id="garments"></div>').addTo(Other);
+      L.marker([40.69075, -73.9939]).bindPopup('<h3 id="house">Mrs. Arnold</h3><p id="address">169 Clinton St</p><div id="garments"><a href="https://www.metmuseum.org/art/collection/search/159197"><img src="https://dl.airtable.com/mHicdzgdQ5GpLwpYolq1_image.png" class="img-thumbnail"></a></div>').addTo(Other);
+      L.marker([48.85661, 2.352222]).bindPopup('<h3 id="house">Gagelin-Opigez</h3><p id="address"></p><div id="garments"></div>').addTo(Other);
+      L.marker([48.86938, 2.338554]).bindPopup('<h3 id="house">Eugénie Pariset</h3><p id="address">10 rue due Quatre-Septembre</p><div id="garments"><a href="https://www.philamuseum.org/collections/permanent/220213.html?mulR=2090112588|1"><img src="https://dl.airtable.com/4N64RQjBT7yCiWBttBmL_image.png" class="img-thumbnail"></a></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.86771, 2.326295]).bindPopup('<h3 id="house">Chanel Modes</h3><p id="address">21 rue Cambon</p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Womenswear</a>').addTo(Womenswear);
+      L.marker([48.86804, 2.330207]).bindPopup('<h3 id="house">Ancienne Maison Paul Virot & Berthe</h3><p id="address">26 place Vendôme</p><div id="garments"><a href="https://art.famsf.org/ancienne-maison-paul-virot-berthe/womans-hat-5564"><img src="https://dl.airtable.com/UzlBQqLSQbK1scznAnN4_image.png" class="img-thumbnail"></a></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.86185, 2.338297]).bindPopup('<h3 id="house">Rosine Augustine Fourmentin</h3><p id="address">164 rue de Rivoli</p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.86804, 2.330207]).bindPopup('<h3 id="house">Paul Virot et Berthe</h3><p id="address">26 place Vendôme</p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.8684, 2.321636]).bindPopup('<h3 id="house">House of Lanvin</h3><p id="address">16 rue Boissy-d\'Anglas</p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.86994, 2.329371]).bindPopup('<h3 id="house">Madame Mantel</h3><p id="address">37 rue de Capucines</p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.86987, 2.33298]).bindPopup('<h3 id="house">Guillard Soeurs</h3><p id="address">38 avenue de l\'Opéra</p><div id="garments"><a href="https://www.philamuseum.org/collections/permanent/159225.html?mulR=1736029256|1"><img src="https://dl.airtable.com/7qMG2AqvRzO9jrWDs6nc_image.png" class="img-thumbnail"></a></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.86958, 2.352616]).bindPopup('<h3 id="house">Magasins de Mme Bénard </h3><p id="address">368 rue St Denis</p><div id="garments"></div> <a href="#" id="type" class="badge badge-primary">Childrenswear</a>').addTo(Childrenswear);
+      L.marker([37.78759, -122.407]).bindPopup('<h3 id="house">Dinan Importer</h3><p id="address">160 Geary St</p><div id="garments"><a href="https://art.famsf.org/madame-louison/womans-hat-19854039"><img src="https://dl.airtable.com/1Ww3UMmQluvQrpOlSNeO_image.png" class="img-thumbnail"></a></div> <a href="#" id="type" class="badge badge-primary">Importer</a>').addTo(Importer);
+      L.marker([40.69702, -73.9353]).bindPopup('<h3 id="house">Madame Hartley</h3><p id="address">947 Broadway</p><div id="garments"><a href="https://www.philamuseum.org/collections/permanent/90362.html?mulR=1294222895|29"><img src="https://dl.airtable.com/axpeSBZWQ1G7pzSXp9Y8_image.png" class="img-thumbnail"></a></div> <a href="#" id="type" class="badge badge-primary">Milliner</a> <a href="#" id="type" class="badge badge-primary">Importer</a>').addTo(Milliner);
+      L.marker([48.85661, 2.352222]).bindPopup('<h3 id="house">Medsdemoiselles Cotel</h3><p id="address"></p><div id="garments"><a href="https://www.philamuseum.org/collections/permanent/66276.html?mulR=1802848898|1"><img src="https://dl.airtable.com/xIPGe1GDRcK74oRz6E4N_image.png" class="img-thumbnail"></a></div> <a href="#" id="type" class="badge badge-primary">Milliner</a>').addTo(Milliner);
+      L.marker([48.85661, 2.352222]).bindPopup('<h3 id="house">House of Worth</h3><p id="address"></p><div id="garments"></div>').addTo(Other);
 
-      var coord_2 = [48.86951, 2.338441];
-      var popup_2 = '<h6>A. Corbay<br><small class="text-muted">4 rue Ménars</small></h6><figure class="figure"><img src="https://dl.airtable.com/FtGRnkkaTRqTDd0eIyWg_C.I.68.53.3ab_F.jpg" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure."><figcaption class="figure-caption">Met - C.I.68.53.3a, b</figcaption></figure><a href="#">View full record</a>';
-      L.marker(coord_2).bindPopup(popup_2).addTo(milliner);
-
-      var coord_3 = [48.8686382, 2.3304539];
-      var popup_3 = '<h6>Annie & Georgette<br><small class="text-muted">3 rue de la Paix</small></h6><figure class="figure"><img src="https://dl.airtable.com/WapKzSlCQIqMku4Fn6OE_image.png" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure."><figcaption class="figure-caption">PMA - 1948-18-44</figcaption></figure><a href="#">View full record</a>';
-      L.marker(coord_3).bindPopup(popup_3).addTo(womenswear);
-
-      var coord_4 = [48.86975, 2.311164];
-      var popup_4 = '<h6>Caroline Reboux<br><small class="text-muted">9 avenue Matignon</small></h6><figure class="figure"><img src="https://dl.airtable.com/6ngg0TREWYulDxB5y2yg_image.png" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure."><figcaption class="figure-caption">MAD - 89-48-3</figcaption></figure><a href="#">View full record</a>';
-      L.marker(coord_4).bindPopup(popup_4).addTo(womenswear);
-
-      var coord_5 = [48.86804, 2.330207];
-      var popup_5 = '<h6>Ancienne Maison Paul Virot & Berthe<br><small class="text-muted">26 place Vendôme</small></h6><figure class="figure"><img src="https://dl.airtable.com/UzlBQqLSQbK1scznAnN4_image.png" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure."><figcaption class="figure-caption">FAMSF - 55.6.4</figcaption></figure><a href="#">View full record</a>';
-      L.marker(coord_5).bindPopup(popup_5).addTo(department);
-
-      var coord_6 = [48.87327, 2.326307];
-      var popup_6 = '<h6>Cordeau et Laugaudin<br><small class="text-muted">32 rue Mathurins</small></h6><figure class="figure"><img src="https://dl.airtable.com/2mVJAvumRoOtmYJhrKBV_image.png" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure."><figcaption class="figure-caption">MAD - 28185.A</figcaption></figure><a href="#">View full record</a>';
-      L.marker(coord_6).bindPopup(popup_6).addTo(department);
-
-    	var map = L.map('mapid', {
-    		center: [48.853, 2.354],
-    		zoom: 13.3,
-    		layers: [paris_1860_layer, milliner, womenswear, department]
+    	var map = L.map('paris-map', {
+    		center: [48.856614, 2.3522219],
+    		zoom: 13,
+    		layers: [paris_1860_layer, Childrenswear, Departmentstore, Perfumer, Importer, Womenswear, Tailor, Milliner, Other]
     	});
 
     	var baseLayers = {
@@ -78,9 +168,14 @@
     	};
 
       var overlayMaps = {
-          "Milliner": milliner,
-          "Womenswear": womenswear,
-          "Department store": department
+          "Childrenswear": Childrenswear,
+          "Department Store": Departmentstore,
+          "Perfumer": Perfumer,
+          "Importer": Importer,
+          "Womenswear": Womenswear,
+          "Tailor": Tailor,
+          "Milliner": Milliner,
+          "Other": Other
       };
 
     	L.control.layers(baseLayers, overlayMaps).addTo(map);
