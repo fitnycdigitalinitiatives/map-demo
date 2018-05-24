@@ -31,17 +31,22 @@ nav {
 .leaflet-popup {
   font-size: initial;
 }
+.leaflet-popup-content h3 {
+  font-size: 24px;
+}
 
 .leaflet-popup-content #address {
   margin-top: 0;
   margin-bottom: 1rem;
   font-size: 80%;
+  font-style: italic;
 }
 
 .leaflet-container .badge {
   color: #fff;
 }
 #garments img {
-  max-height: 150px;
+  width: 67px;
+  max-width: none;
   margin-bottom: 1rem;
 }
