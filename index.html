@@ -430,7 +430,7 @@
       $('.mapping-marker-popup-content').each(function() {
         var popup_content = $(this).clone();
         var popup = L.popup({
-          maxWidth: 260
+          maxWidth: 400
         }).setContent(popup_content[0])
         var latLng = new L.LatLng(popup_content.data('marker-lat'), popup_content.data('marker-lng'));
         var marker = new L.Marker(latLng);
