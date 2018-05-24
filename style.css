@@ -41,9 +41,7 @@ nav {
 .leaflet-container .badge {
   color: #fff;
 }
-#garments {
-  margin-bottom: 1rem;
-}
 #garments img {
   max-height: 150px;
+  margin-bottom: 1rem;
 }
