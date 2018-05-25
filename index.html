@@ -53,7 +53,7 @@
     </div>
     <div class="mapping-marker-popup-content" data-marker-lat="48.85661" data-marker-lng="2.352222" data-marker-tag="Other">
       <h3 id="house">Maison Laur</h3></div>
-    <div class="mapping-marker-popup-content" data-marker-lat="48.87393" data-marker-lng="2.328485" data-marker-tag="Departmentstore">
+    <div class="mapping-marker-popup-content" data-marker-lat="48.87393" data-marker-lng="2.328485" data-marker-tag="Department store">
       <h3 id="house">Printemps</h3>
       <p id="address">64 boulevard Haussmann</p> <span id="type" class="badge badge-primary">Department store</span></div>
     <div class="mapping-marker-popup-content" data-marker-lat="48.87174" data-marker-lng="2.339512" data-marker-tag="Milliner">
@@ -138,7 +138,7 @@
     <div class="mapping-marker-popup-content" data-marker-lat="48.86958" data-marker-lng="2.331347" data-marker-tag="Perfumer">
       <h3 id="house">Guerlain</h3>
       <p id="address">15 rue de la Paix</p> <span id="type" class="badge badge-primary">Perfumer</span></div>
-    <div class="mapping-marker-popup-content" data-marker-lat="48.86185" data-marker-lng="2.338297" data-marker-tag="Departmentstore">
+    <div class="mapping-marker-popup-content" data-marker-lat="48.86185" data-marker-lng="2.338297" data-marker-tag="Department store">
       <h3 id="house">Grands Magasins du Louvre</h3>
       <p id="address">164 rue de Rivoli</p> <span id="type" class="badge badge-primary">Department store</span></div>
     <div class="mapping-marker-popup-content" data-marker-lat="48.86891" data-marker-lng="2.330178" data-marker-tag="Milliner">
@@ -306,7 +306,7 @@
         <div class="col-auto"><a href="https://metmuseum.org/art/collection/search/82629"><img src="https://dl.airtable.com/B1w5GcJWR4i0kvuvINEB_C.I.43.7.4ab.jpg" class="img-thumbnail"></a></div>
       </div>
     </div>
-    <div class="mapping-marker-popup-content" data-marker-lat="48.85524" data-marker-lng="2.324809" data-marker-tag="Departmentstore">
+    <div class="mapping-marker-popup-content" data-marker-lat="48.85524" data-marker-lng="2.324809" data-marker-tag="Department store">
       <h3 id="house">Au Bon Marché</h3>
       <p id="address">rue du Bac</p>
       <div class="row align-items-center flex-nowrap" id="garments">
@@ -427,20 +427,36 @@
         'Modern': L.layerGroup().addLayer(baseMaps['Light'])
       };
 
+      var categories = [];
+      $('.mapping-marker-popup-content').each(function() {
+        var popup_content = $(this).clone();
+        var category = popup_content.data('marker-tag');
+        categories.push(category);
+      });
+      var categoriesSet = new Set(categories);
+      var layerTags = {};
+      for (let tag of categoriesSet) {
+        layerTags[tag] = L.layerGroup().addTo(map);
+      }
+
+
       $('.mapping-marker-popup-content').each(function() {
         var popup_content = $(this).clone();
         var popup = L.popup({
           maxWidth: 400
         }).setContent(popup_content[0])
         var latLng = new L.LatLng(popup_content.data('marker-lat'), popup_content.data('marker-lng'));
+        var markerCategory = popup_content.data('marker-tag');
         var marker = new L.Marker(latLng);
         marker.bindPopup(popup);
-        markers.addLayer(marker);
+        layerTags[markerCategory].addLayer(marker);
       });
 
       map.addLayer(layerMaps['Paris 1840']);
-      map.addLayer(markers);
-      map.addControl(new L.Control.Layers(layerMaps));
+      var controlLayers = new L.Control.Layers(layerMaps, layerTags);
+      map.addControl(controlLayers);
+      var test = new L.Control();
+      console.log(controlLayers.getContainer())
 
       map.setView([48.856614, 2.3522219], 13);
 
