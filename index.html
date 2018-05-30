@@ -25,7 +25,7 @@
   </nav>
   <div class="container-fluid p-0">
     <div class="row no-gutters">
-      <div id="sidebar" class="col-sm-3 px-3">
+      <div id="sidebar" class="col-sm-3 px-4">
         <h1 class="text-center mt-4">Early Fashion Designers</h1>
         <ul class="nav justify-content-center" id="cities">
           <li class="nav-item">
@@ -37,6 +37,13 @@
           <li class="nav-item">
             <a class="nav-link disabled" href="#">London</a>
           </li>
+        </ul>
+        <h2 class="pt-4">About</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+        <h2 class="pt-4">Categories</h2>
+        <ul id="map-controls" class="list-group list-group-flush">
         </ul>
       </div>
       <div class="col-sm-9">
@@ -392,6 +399,7 @@
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="javascript/distinct-colors.min.js"></script>
   <script>
     $(document).ready(function() {
 
@@ -433,11 +441,27 @@
         var category = popup_content.data('marker-tag');
         categories.push(category);
       });
-      var categoriesSet = new Set(categories);
+      var categoriesSet = new Set(categories.sort());
       var layerTags = {};
       for (let tag of categoriesSet) {
         layerTags[tag] = L.layerGroup().addTo(map);
       }
+      var myIcon = L.divIcon({className: 'my-div-icon'});
+      var layerColors = {};
+      var layerIcons = {};
+      var number_of_colors = Object.keys(layerTags).length;
+      var palette = new DistinctColors({count: number_of_colors});
+      var i = 0;
+      for (let tag in layerTags) {
+        layerColors[tag] = palette[i]['_rgb'];
+        layerIcons[tag] = L.divIcon({
+          className: 'my-div-icon',
+          html: '<span style="background-color: rgba(' + layerColors[tag] + ');" />'
+        });
+        i++;
+      };
+
+      console.log(layerIcons);
 
 
       $('.mapping-marker-popup-content').each(function() {
@@ -447,18 +471,30 @@
         }).setContent(popup_content[0])
         var latLng = new L.LatLng(popup_content.data('marker-lat'), popup_content.data('marker-lng'));
         var markerCategory = popup_content.data('marker-tag');
-        var marker = new L.Marker(latLng);
+        var marker = new L.Marker(latLng, {icon: layerIcons[markerCategory]});
         marker.bindPopup(popup);
         layerTags[markerCategory].addLayer(marker);
       });
 
-      map.addLayer(layerMaps['Paris 1840']);
-      var controlLayers = new L.Control.Layers(layerMaps, layerTags);
-      map.addControl(controlLayers);
-      var test = new L.Control();
-      console.log(controlLayers.getContainer())
 
+      map.addLayer(layerMaps['Paris 1840']);
+      var controlLayers = new L.Control.Layers(layerMaps);
+      map.addControl(controlLayers);
       map.setView([48.856614, 2.3522219], 13);
+      for (let tag in layerTags) {
+        let count = layerTags[tag].getLayers().length;
+        $('#map-controls').append('<li class="list-group-item d-flex justify-content-between align-items-center px-0"><div><button aria-label="' + tag + '" id="' + tag + '" style="background-color: rgba(' + layerColors[tag] + ');" type="button" class="btn active" data-toggle="button" aria-pressed="true" autocomplete="off"></button>' + tag + '</div><span class="badge badge-secondary badge-pill">' + count + '</span>' + '</li>');
+        $('[id="' + tag + '"]').click(function(){
+            if (map.hasLayer(layerTags[tag])) {
+              layerTags[tag].remove(map);
+              $(this).css('background-color', '#F0F0F0');
+            }
+            else {
+              layerTags[tag].addTo(map);
+              $(this).css('background-color', 'rgba(' + layerColors[tag] + ')');
+            }
+        });
+      }
 
     });
   </script>
