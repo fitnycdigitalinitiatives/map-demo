@@ -456,6 +456,7 @@
         layerColors[tag] = palette[i]['_rgb'];
         layerIcons[tag] = L.divIcon({
           className: 'my-div-icon',
+          popupAnchor: [0, -15],
           html: '<span style="background-color: rgba(' + layerColors[tag] + ');" />'
         });
         i++;
