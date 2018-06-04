@@ -40,11 +40,16 @@
         </ul>
         <h2 class="pt-4">About</h2>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          A sneak preview of our forthcoming maps of the addresses of early fashion designers, publishers, department stores, specialty shops, and fashion illustrators (1790-1920).
         </p>
         <h2 class="pt-4">Categories</h2>
+        <ul id="marker-controls" class="list-group list-group-flush">
+        </ul>
+        <!--
+        <h2 class="pt-4">Base Maps</h2>
         <ul id="map-controls" class="list-group list-group-flush">
         </ul>
+        -->
       </div>
       <div class="col-sm-9">
         <div id="paris-map"></div>
@@ -484,7 +489,7 @@
       map.setView([48.856614, 2.3522219], 13);
       for (let tag in layerTags) {
         let count = layerTags[tag].getLayers().length;
-        $('#map-controls').append('<li class="list-group-item d-flex justify-content-between align-items-center px-0"><div><button aria-label="' + tag + '" id="' + tag + '" style="background-color: rgba(' + layerColors[tag] + ');" type="button" class="btn active" data-toggle="button" aria-pressed="true" autocomplete="off"></button>' + tag + '</div><span class="badge badge-secondary badge-pill">' + count + '</span>' + '</li>');
+        $('#marker-controls').append('<li class="list-group-item d-flex justify-content-between align-items-center px-0"><div><button aria-label="' + tag + '" id="' + tag + '" style="background-color: rgba(' + layerColors[tag] + ');" type="button" class="btn active" data-toggle="button" aria-pressed="true" autocomplete="off"></button>' + tag + '</div><span class="badge badge-secondary badge-pill">' + count + '</span>' + '</li>');
         $('[id="' + tag + '"]').click(function(){
             if (map.hasLayer(layerTags[tag])) {
               layerTags[tag].remove(map);
@@ -496,6 +501,29 @@
             }
         });
       }
+      /*for (baseMap in layerMaps) {
+        if (map.hasLayer(layerMaps[baseMap])) {
+          $('#map-controls').append('<li class="list-group-item d-flex justify-content-between align-items-center px-0"><div><button aria-label="' + baseMap + '" id="' + baseMap + '" type="button" class="btn active" style="background-color: rgb(0, 0, 0);"  data-toggle="button" aria-pressed="true" autocomplete="off"></button>' + baseMap + '</div></li>');
+          $('[id="' + baseMap + '"]').click(function(){
+            if (map.hasLayer(layerMaps[baseMap])) {
+              layerMaps[baseMap].remove(map);
+            }
+            else {
+              layerMaps[baseMap].addTo(map);
+            }
+          });
+        }
+        else {
+          $('#map-controls').append('<li class="list-group-item d-flex justify-content-between align-items-center px-0"><div><button aria-label="' + baseMap + '" id="' + baseMap + '" type="button" class="btn" data-toggle="button" autocomplete="off"></button>' + baseMap + '</div></li>');
+          $('[id="' + baseMap + '"]').click(function(){
+            if (map.hasLayer(layerMaps[baseMap])) {
+            }
+            else {
+              layerMaps[baseMap].addTo(map);
+            }
+          });
+        }
+      }*/
 
     });
   </script>

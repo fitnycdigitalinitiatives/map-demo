@@ -31,14 +31,22 @@ nav {
 #cities .disabled {
   cursor: not-allowed;
 }
-#map-controls .btn {
+#marker-controls .btn {
   padding: .5rem;
   margin-bottom: 5px;
   margin-right: .5rem;
   border-radius: 18px 18px 0;
-  transform: rotate(45deg);  
+  transform: rotate(45deg);
 }
-#map-controls .btn.focus, #map-controls .btn:focus {
+#marker-controls .btn.focus, #marker-controls .btn:focus {
+  box-shadow: none;
+}
+#map-controls .btn {
+  padding: .5rem;
+  margin-bottom: 5px;
+  margin-right: .5rem;
+}
+#map-controls .btn.focus, #mmap-controls .btn:focus {
   box-shadow: none;
 }
 /* Markers and Pop-ups */
