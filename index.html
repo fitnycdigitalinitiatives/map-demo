@@ -25,7 +25,7 @@
   </nav>
   <div class="container-fluid p-0">
     <div class="row no-gutters">
-      <div id="sidebar" class="col-sm-3 px-4">
+      <div id="sidebar" class="order-last order-md-first col-md-5 col-lg-4 col-xl-3 px-4">
         <h1 class="text-center mt-4">Early Fashion Designers</h1>
         <ul class="nav justify-content-center" id="cities">
           <li class="nav-item">
@@ -45,13 +45,11 @@
         <h2 class="pt-4">Categories</h2>
         <ul id="marker-controls" class="list-group list-group-flush">
         </ul>
-        <!--
         <h2 class="pt-4">Base Maps</h2>
         <ul id="map-controls" class="list-group list-group-flush">
         </ul>
-        -->
       </div>
-      <div class="col-sm-9">
+      <div class="order-first order-md-last col-md-7 col-lg-8 col-xl-9">
         <div id="paris-map"></div>
       </div>
     </div>
@@ -467,9 +465,6 @@
         i++;
       };
 
-      console.log(layerIcons);
-
-
       $('.mapping-marker-popup-content').each(function() {
         var popup_content = $(this).clone();
         var popup = L.popup({
@@ -485,7 +480,6 @@
 
       map.addLayer(layerMaps['Paris 1840']);
       var controlLayers = new L.Control.Layers(layerMaps);
-      map.addControl(controlLayers);
       map.setView([48.856614, 2.3522219], 13);
       for (let tag in layerTags) {
         let count = layerTags[tag].getLayers().length;
@@ -501,28 +495,41 @@
             }
         });
       }
-      /*for (baseMap in layerMaps) {
+      for (let baseMap in layerMaps) {
         if (map.hasLayer(layerMaps[baseMap])) {
-          $('#map-controls').append('<li class="list-group-item d-flex justify-content-between align-items-center px-0"><div><button aria-label="' + baseMap + '" id="' + baseMap + '" type="button" class="btn active" style="background-color: rgb(0, 0, 0);"  data-toggle="button" aria-pressed="true" autocomplete="off"></button>' + baseMap + '</div></li>');
-          $('[id="' + baseMap + '"]').click(function(){
-            if (map.hasLayer(layerMaps[baseMap])) {
-              layerMaps[baseMap].remove(map);
-            }
-            else {
-              layerMaps[baseMap].addTo(map);
-            }
-          });
+          $('#map-controls').append('<li class="list-group-item d-flex justify-content-between align-items-center px-0"><div><button aria-label="' + baseMap + '" id="' + baseMap + '" type="button" class="btn active" style="background-color: #000000;"  data-toggle="button" aria-pressed="true" autocomplete="off"></button>' + baseMap + '</div></li>');
         }
         else {
-          $('#map-controls').append('<li class="list-group-item d-flex justify-content-between align-items-center px-0"><div><button aria-label="' + baseMap + '" id="' + baseMap + '" type="button" class="btn" data-toggle="button" autocomplete="off"></button>' + baseMap + '</div></li>');
-          $('[id="' + baseMap + '"]').click(function(){
-            if (map.hasLayer(layerMaps[baseMap])) {
-            }
-            else {
-              layerMaps[baseMap].addTo(map);
-            }
-          });
+          $('#map-controls').append('<li class="list-group-item d-flex justify-content-between align-items-center px-0"><div><button aria-label="' + baseMap + '" id="' + baseMap + '" type="button" class="btn" data-toggle="button" aria-pressed="false" autocomplete="off"></button>' + baseMap + '</div></li>');
         }
+      }
+      $('#map-controls .btn').click(function(){
+        let clickMap = $(this).attr('id');
+        if (!map.hasLayer(layerMaps[clickMap])) {
+          for (let currentMap in layerMaps) {
+            if (map.hasLayer(layerMaps[currentMap])) {
+              layerMaps[currentMap].remove(map);
+              $('[id="' + currentMap + '"]').css({'background-color': '#F0F0F0'}).button('toggle');
+            }
+          }
+          layerMaps[clickMap].addTo(map);
+          $('[id="' + clickMap + '"]').css({'background-color': '#000000'});
+        }
+      });
+
+
+
+
+      /*for (let baseMap in layerMaps) {
+        $('#map-controls').append('<li class="list-group-item d-flex justify-content-between align-items-center px-0"><div><button aria-label="' + baseMap + '" id="' + baseMap + '" type="button" class="btn active" style="background-color: rgb(0, 0, 0);"  data-toggle="button" aria-pressed="true" autocomplete="off"></button>' + baseMap + '</div></li>');
+        $('[id="' + baseMap + '"]').click(function(){
+          for (let currentMap in layerMaps) {
+            if (map.hasLayer(layerMaps[currentMap])) {
+              layerMaps[currentMap].remove(map);
+            }
+          }
+          layerMaps[baseMap].addTo(map);
+        });
       }*/
 
     });

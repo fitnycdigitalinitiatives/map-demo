@@ -5,12 +5,17 @@ nav {
   background-color: #1c1c1c;
 }
 #paris-map {
-  height: calc(100vh - 66px);
+  height: calc(75vh);
 }
-#sidebar {
-  height: calc(100vh - 66px);
-  overflow-y: auto;
-  border-right: 1px solid rgba(0,0,0,.125);
+@media (min-width: 768px) {
+  #paris-map {
+    height: calc(100vh - 66px);
+  }
+  #sidebar {
+    height: calc(100vh - 66px);
+    overflow-y: auto;
+    border-right: 1px solid rgba(0,0,0,.125);
+  }
 }
 #sidebar h1 {
   font-size: 26px;
